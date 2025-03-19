@@ -5,10 +5,10 @@ import {
   useDispatch as dispatchHook,
   useSelector as selectorHook
 } from 'react-redux';
-import authSlice from './slices/authSlice';
+import userSlice from './slices/userSlice';
 
 const rootReducer = {
-  auth: authSlice
+  [userSlice.name]: userSlice.reducer
 }; // Заменить на импорт настоящего редьюсера
 
 const store = configureStore({
