@@ -14,8 +14,15 @@ import styles from './app.module.css';
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { AppHeader, Modal, OrderInfo, ProtectedRoute } from '@components';
-import { useDispatch } from '@store';
-import { userActions } from '@slices';
+import { useDispatch, useSelector } from '@store';
+import {
+  feedActions,
+  ingredientActions,
+  ingredientSelectors,
+  userActions
+} from '@slices';
+import { getFeedsApi, getOrdersApi } from '@api';
+import { getFeed } from '@thunks';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -27,6 +34,8 @@ const App = () => {
       .finally(() => {
         dispatch(userActions.setCheckUser());
       });
+    dispatch(ingredientActions.getIngredients());
+    dispatch(feedActions.getFeed());
   }, []);
 
   return (

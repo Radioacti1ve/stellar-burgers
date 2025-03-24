@@ -9,7 +9,7 @@ import {
   updateUser,
   forgotPassword,
   resetPassword
-} from '../thunk/userThunks';
+} from '@thunks';
 
 export type UserInitialState = {
   user: TUser | null;
