@@ -4,7 +4,7 @@ import { userSelectors, userActions } from '@slices';
 import { useSelector, useDispatch } from '@store';
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
+  /*DONE* TODO: взять переменную из стора */
   const dispatch = useDispatch();
   const user = useSelector(userSelectors.selectUser);
 
@@ -57,6 +57,4 @@ export const Profile: FC = () => {
       handleInputChange={handleInputChange}
     />
   );
-
-  return null;
 };

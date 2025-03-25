@@ -28,7 +28,8 @@ const userSlice = createSlice({
   initialState,
   selectors: {
     selectUser: (state) => state.user,
-    selectUserCheck: (state) => state.userCheck
+    selectUserCheck: (state) => state.userCheck,
+    selectStatus: (state) => state.userStatus
   },
   reducers: {
     setCheckUser: (state) => {

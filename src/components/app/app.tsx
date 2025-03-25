@@ -11,21 +11,31 @@ import {
 } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { AppHeader, Modal, OrderInfo, ProtectedRoute } from '@components';
-import { useDispatch, useSelector } from '@store';
+import {
+  AppHeader,
+  IngredientDetails,
+  Modal,
+  OrderInfo,
+  ProtectedRoute
+} from '@components';
+import { useDispatch } from '@store';
 import {
   feedActions,
   ingredientActions,
-  ingredientSelectors,
+  ordersActions,
   userActions
 } from '@slices';
-import { getFeedsApi, getOrdersApi } from '@api';
-import { getFeed } from '@thunks';
 
 const App = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const closeModal = () => {
+    navigate(location.state?.background || '/');
+  };
 
   useEffect(() => {
     dispatch(userActions.getUser())
@@ -36,6 +46,7 @@ const App = () => {
       });
     dispatch(ingredientActions.getIngredients());
     dispatch(feedActions.getFeed());
+    dispatch(ordersActions.getOrders());
   }, []);
 
   return (
@@ -44,7 +55,14 @@ const App = () => {
       <Routes>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
-        {/* <Route path='/feed/:number' element={<Modal> <OrderInfo> </Modal>} /> */}
+        <Route
+          path='/feed/:number'
+          element={
+            <Modal title='Детали заказа' onClose={closeModal}>
+              <OrderInfo />
+            </Modal>
+          }
+        />
         <Route
           path='/login'
           element={
@@ -91,6 +109,24 @@ const App = () => {
             <ProtectedRoute>
               <ProfileOrders />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/profile/orders/:number'
+          element={
+            <ProtectedRoute>
+              <Modal title='Детали заказа' onClose={closeModal}>
+                <OrderInfo />
+              </Modal>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/ingredients/:id'
+          element={
+            <Modal title='Детали ингредиента' onClose={closeModal}>
+              <IngredientDetails />
+            </Modal>
           }
         />
         <Route path='*' element={<NotFound404 />} />

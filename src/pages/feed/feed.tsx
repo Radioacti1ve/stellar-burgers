@@ -7,9 +7,10 @@ import { FC } from 'react';
 import { useSelector } from 'react-redux';
 
 export const Feed: FC = () => {
-  /** TODO: взять переменную из стора */
+  /*DONE* TODO: взять переменную из стора */
   const dispatch = useDispatch();
   const orders: TOrder[] = useSelector(feedSelectors.selectOrders);
+  const status = useSelector(feedSelectors.selectStatus);
   const handleGetFeeds = () => {
     dispatch(feedActions.getFeed());
   };
@@ -18,5 +19,7 @@ export const Feed: FC = () => {
     return <Preloader />;
   }
 
-  return <FeedUI orders={orders} handleGetFeeds={handleGetFeeds} />;
+  return (
+    <FeedUI orders={orders} status={status} handleGetFeeds={handleGetFeeds} />
+  );
 };
