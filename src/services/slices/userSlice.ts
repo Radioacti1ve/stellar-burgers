@@ -23,7 +23,7 @@ const initialState: UserInitialState = {
   userCheck: false
 };
 
-const userSlice = createSlice({
+export const userSlice = createSlice({
   name: USER_SLICE_NAME,
   initialState,
   selectors: {

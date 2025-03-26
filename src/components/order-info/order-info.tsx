@@ -7,7 +7,7 @@ import { feedSelectors, ingredientSelectors } from '@slices';
 import { useParams } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
+  /*DONE* TODO: взять переменные orderData и ingredients из стора */
   const { number } = useParams<{ number: string }>();
   const orders = useSelector(feedSelectors.selectOrders);
 

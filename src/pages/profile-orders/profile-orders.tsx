@@ -5,7 +5,7 @@ import { TOrder } from '@utils-types';
 import { FC } from 'react';
 
 export const ProfileOrders: FC = () => {
-  /** TODO: взять переменную из стора */
+  /*DONE* TODO: взять переменную из стора */
   const orders: TOrder[] = useSelector(ordersSelectors.selectOrders);
 
   return <ProfileOrdersUI orders={orders} />;
