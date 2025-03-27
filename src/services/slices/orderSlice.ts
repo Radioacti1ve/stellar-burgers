@@ -1,13 +1,21 @@
 import { getOrderByNumber, getOrders, orderBurger } from '@thunks';
 import { ORDER_SLICE_NAME } from './sliceNames';
 import { createSlice } from '@reduxjs/toolkit';
-import { RequestStatus, TOrdersData } from '@utils-types';
+import { RequestStatus, TOrder, TOrdersData } from '@utils-types';
 
-const initialState: TOrdersData & { orderStatus: RequestStatus } = {
+export type OrderInitialState = TOrdersData & {
+  getOrderStatus: RequestStatus;
+  orderStatus: boolean;
+  userOrder: TOrder | null;
+};
+
+const initialState: OrderInitialState = {
   orders: [],
-  orderStatus: RequestStatus.Idle,
+  getOrderStatus: RequestStatus.Idle,
+  orderStatus: false,
   total: 0,
-  totalToday: 0
+  totalToday: 0,
+  userOrder: null
 };
 
 export const orderSlice = createSlice({
@@ -16,43 +24,50 @@ export const orderSlice = createSlice({
   selectors: {
     selectOrders: (state) => state.orders,
     selectTotal: (state) => state.total,
-    selectTotalToday: (state) => state.totalToday
+    selectTotalToday: (state) => state.totalToday,
+    selectStatus: (state) => state.orderStatus,
+    selectUserOrder: (state) => state.userOrder
   },
-  reducers: {},
+  reducers: {
+    clearUserOrder: (state) => {
+      state.userOrder = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getOrders.pending, (state) => {
-        state.orderStatus = RequestStatus.Loading;
+        state.getOrderStatus = RequestStatus.Loading;
       })
       .addCase(getOrders.fulfilled, (state, action) => {
-        state.orderStatus = RequestStatus.Succeeded;
+        state.getOrderStatus = RequestStatus.Succeeded;
         state.orders = action.payload.orders;
         state.total = action.payload.total;
         state.totalToday = action.payload.totalToday;
       })
       .addCase(getOrders.rejected, (state) => {
-        state.orderStatus = RequestStatus.Failed;
+        state.getOrderStatus = RequestStatus.Failed;
       })
 
       .addCase(getOrderByNumber.pending, (state) => {
-        state.orderStatus = RequestStatus.Loading;
+        state.getOrderStatus = RequestStatus.Loading;
       })
       .addCase(getOrderByNumber.fulfilled, (state, action) => {
-        state.orderStatus = RequestStatus.Succeeded;
+        state.getOrderStatus = RequestStatus.Succeeded;
         state.orders = action.payload.orders;
       })
       .addCase(getOrderByNumber.rejected, (state) => {
-        state.orderStatus = RequestStatus.Failed;
+        state.getOrderStatus = RequestStatus.Failed;
       })
 
       .addCase(orderBurger.pending, (state) => {
-        state.orderStatus = RequestStatus.Loading;
+        state.orderStatus = true;
       })
       .addCase(orderBurger.fulfilled, (state, action) => {
-        state.orderStatus = RequestStatus.Succeeded;
+        state.orderStatus = false;
+        state.userOrder = action.payload.order;
       })
       .addCase(orderBurger.rejected, (state) => {
-        state.orderStatus = RequestStatus.Failed;
+        state.orderStatus = false;
       });
   }
 });
