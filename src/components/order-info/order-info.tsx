@@ -1,19 +1,20 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useEffect } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useSelector, useDispatch } from '@store';
-import { feedSelectors, ingredientSelectors, ordersSelectors } from '@slices';
-import { useLocation, useParams } from 'react-router-dom';
+import { ingredientSelectors, ordersActions, ordersSelectors } from '@slices';
+import { useParams } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {
   /*DONE* TODO: взять переменные orderData и ingredients из стора */
   const { number } = useParams<{ number: string }>();
-  const location = useLocation();
-  const isProfile = location.pathname.startsWith('/profile');
-  const orders = useSelector(
-    isProfile ? ordersSelectors.selectOrders : feedSelectors.selectOrders
-  );
+  const dispatch = useDispatch();
+  const orders = useSelector(ordersSelectors.selectOrderByNumber);
+
+  useEffect(() => {
+    dispatch(ordersActions.getOrderByNumber(Number(number)));
+  }, []);
 
   const orderData = orders.find((elem) => String(elem.number) === number);
 

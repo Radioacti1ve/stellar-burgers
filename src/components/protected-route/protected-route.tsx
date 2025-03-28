@@ -24,7 +24,7 @@ export const ProtectedRoute = ({ children, isPublic }: ProtectedRouteProps) => {
   }
 
   if (!isPublic && !user) {
-    return <Navigate to='/login' />;
+    return <Navigate to='/login' state={{ from: location }} />;
   }
 
   return children;

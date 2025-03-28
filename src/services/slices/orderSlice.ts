@@ -5,13 +5,17 @@ import { RequestStatus, TOrder, TOrdersData } from '@utils-types';
 
 export type OrderInitialState = TOrdersData & {
   getOrderStatus: RequestStatus;
+  getOrderByNumberStatus: RequestStatus;
+  orderByNumber: TOrder[];
   orderStatus: boolean;
   userOrder: TOrder | null;
 };
 
 const initialState: OrderInitialState = {
   orders: [],
+  orderByNumber: [],
   getOrderStatus: RequestStatus.Idle,
+  getOrderByNumberStatus: RequestStatus.Idle,
   orderStatus: false,
   total: 0,
   totalToday: 0,
@@ -23,6 +27,7 @@ export const orderSlice = createSlice({
   initialState,
   selectors: {
     selectOrders: (state) => state.orders,
+    selectOrderByNumber: (state) => state.orderByNumber,
     selectTotal: (state) => state.total,
     selectTotalToday: (state) => state.totalToday,
     selectGetOrderStatus: (state) => state.getOrderStatus,
@@ -50,14 +55,14 @@ export const orderSlice = createSlice({
       })
 
       .addCase(getOrderByNumber.pending, (state) => {
-        state.getOrderStatus = RequestStatus.Loading;
+        state.getOrderByNumberStatus = RequestStatus.Loading;
       })
       .addCase(getOrderByNumber.fulfilled, (state, action) => {
-        state.getOrderStatus = RequestStatus.Succeeded;
-        state.orders = action.payload.orders;
+        state.getOrderByNumberStatus = RequestStatus.Succeeded;
+        state.orderByNumber = action.payload.orders;
       })
       .addCase(getOrderByNumber.rejected, (state) => {
-        state.getOrderStatus = RequestStatus.Failed;
+        state.getOrderByNumberStatus = RequestStatus.Failed;
       })
 
       .addCase(orderBurger.pending, (state) => {
