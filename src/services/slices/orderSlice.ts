@@ -25,6 +25,7 @@ export const orderSlice = createSlice({
     selectOrders: (state) => state.orders,
     selectTotal: (state) => state.total,
     selectTotalToday: (state) => state.totalToday,
+    selectGetOrderStatus: (state) => state.getOrderStatus,
     selectStatus: (state) => state.orderStatus,
     selectUserOrder: (state) => state.userOrder
   },

@@ -21,17 +21,17 @@ export const constructorSlice = createSlice({
     selectBun: (state) => state.bun
   },
   reducers: {
-    addIngredient: (state, { payload }: PayloadAction<TIngredient>) => {
-      const newIngredient: TConstructorIngredient = {
-        ...payload,
-        id: uuidv4()
-      };
-
-      if (newIngredient.type === 'bun') {
-        state.bun = newIngredient;
-      } else {
-        state.addedIngredients.push(newIngredient);
-      }
+    addIngredient: {
+      reducer: (state, { payload }: PayloadAction<TConstructorIngredient>) => {
+        if (payload.type === 'bun') {
+          state.bun = payload;
+        } else {
+          state.addedIngredients.push(payload);
+        }
+      },
+      prepare: (ingredient: TIngredient) => ({
+        payload: { ...ingredient, id: uuidv4() }
+      })
     },
     deleteIngredient: (
       state,

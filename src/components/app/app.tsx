@@ -21,12 +21,7 @@ import {
   ProtectedRoute
 } from '@components';
 import { useDispatch } from '@store';
-import {
-  feedActions,
-  ingredientActions,
-  ordersActions,
-  userActions
-} from '@slices';
+import { ingredientActions, userActions } from '@slices';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -46,8 +41,6 @@ const App = () => {
         dispatch(userActions.setCheckUser());
       });
     dispatch(ingredientActions.getIngredients());
-    dispatch(feedActions.getFeed());
-    dispatch(ordersActions.getOrders());
   }, []);
 
   return (
@@ -105,7 +98,14 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route path='/profile/orders/:number' element={<OrderInfo />} />
+        <Route
+          path='/profile/orders/:number'
+          element={
+            <ProtectedRoute>
+              <OrderInfo />
+            </ProtectedRoute>
+          }
+        />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route path='*' element={<NotFound404 />} />
       </Routes>
@@ -123,9 +123,11 @@ const App = () => {
           <Route
             path='/profile/orders/:number'
             element={
-              <Modal title='Детали заказа' onClose={closeModal}>
-                <OrderInfo />
-              </Modal>
+              <ProtectedRoute>
+                <Modal title='Детали заказа' onClose={closeModal}>
+                  <OrderInfo />
+                </Modal>
+              </ProtectedRoute>
             }
           />
           <Route

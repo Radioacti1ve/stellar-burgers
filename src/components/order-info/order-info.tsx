@@ -3,13 +3,17 @@ import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useSelector, useDispatch } from '@store';
-import { feedSelectors, ingredientSelectors } from '@slices';
-import { useParams } from 'react-router-dom';
+import { feedSelectors, ingredientSelectors, ordersSelectors } from '@slices';
+import { useLocation, useParams } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {
   /*DONE* TODO: взять переменные orderData и ingredients из стора */
   const { number } = useParams<{ number: string }>();
-  const orders = useSelector(feedSelectors.selectOrders);
+  const location = useLocation();
+  const isProfile = location.pathname.startsWith('/profile');
+  const orders = useSelector(
+    isProfile ? ordersSelectors.selectOrders : feedSelectors.selectOrders
+  );
 
   const orderData = orders.find((elem) => String(elem.number) === number);
 

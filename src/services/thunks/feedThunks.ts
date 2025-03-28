@@ -4,5 +4,5 @@ import { FEED_SLICE_NAME } from '../slices/sliceNames';
 
 export const getFeed = createAsyncThunk(
   `${FEED_SLICE_NAME}/getFeed`,
-  async () => await getFeedsApi()
+  getFeedsApi
 );
